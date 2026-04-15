@@ -21,3 +21,5 @@ if __name__ == "__main__":
     print("\nPara essa quantidade, use:")
     for item, qtd in resultado.items():
         print(f"- {item.capitalize()}: {qtd:.2f}g")
+        
+    print("\n--- FIM ---")
