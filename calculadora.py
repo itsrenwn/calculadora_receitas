@@ -14,12 +14,13 @@ def calcular_proporcional(ingrediente_chave, nova_qtd):
 
 if __name__ == "__main__":
     print("--- Escalonador de Receitas ---")
-    farinha_usuario = float(input("Quantas gramas de farinha você tem? "))
-    
-    resultado = calcular_proporcional("farinha", farinha_usuario)
-    
-    print("\nPara essa quantidade, use:")
-    for item, qtd in resultado.items():
-        print(f"- {item.capitalize()}: {qtd:.2f}g")
+    try:
+        farinha_usuario = float(input("Quantas gramas de farinha você tem? "))
+        resultado = calcular_proporcional("farinha", farinha_usuario)
         
-    print("\n--- FIM ---")
+        print("\nPara essa quantidade, use:")
+        for item, qtd in resultado.items():
+            print(f"- {item.capitalize()}: {qtd:.2f}g")
+        print("\nBom apetite!")
+    except ValueError:
+        print("Erro: Digite um valor numérico válido.")
