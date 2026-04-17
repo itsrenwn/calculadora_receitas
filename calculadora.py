@@ -1,4 +1,3 @@
-# Receita Base de Ciabatta (Proporções em gramas)
 receita_base = {
     "farinha": 500,
     "agua": 375,
@@ -6,10 +5,22 @@ receita_base = {
     "fermento": 5
 }
 
-def exibir_receita(ingredientes):
-    print("\n--- Lista de Ingredientes ---")
-    for item, qtd in ingredientes.items():
-        print(f"{item.capitalize()}: {qtd}g")
+def calcular_proporcional(ingrediente_chave, nova_qtd):
+    # Calcula o fator de escala baseado no ingrediente base (farinha)
+    fator = nova_qtd / receita_base[ingrediente_chave]
+    
+    nova_receita = {item: qtd * fator for item, qtd in receita_base.items()}
+    return nova_receita
 
 if __name__ == "__main__":
-    exibir_receita(receita_base)
+    print("--- Escalonador de Receitas ---")
+    try:
+        farinha_usuario = float(input("Quantas gramas de farinha você tem? "))
+        resultado = calcular_proporcional("farinha", farinha_usuario)
+        
+        print("\nPara essa quantidade, use:")
+        for item, qtd in resultado.items():
+            print(f"- {item.capitalize()}: {qtd:.2f}g")
+        print("\nBom apetite!")
+    except ValueError:
+        print("Erro: Digite um valor numérico válido.")
