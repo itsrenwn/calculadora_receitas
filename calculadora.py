@@ -25,7 +25,7 @@ def calcular_producao(id_receita, farinha_usuario):
     }
     return base["nome"], resultado
 
-if __name__ == "__main__"
+if __name__ == "__main__":
     print("--- SISTEMA DE GESTÃO DE PANIFICAÇÃO ---")
     print("Escolha a base:")
     for id, dados in CATALOGO.items():
