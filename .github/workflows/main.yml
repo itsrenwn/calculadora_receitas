@@ -32,10 +32,14 @@ jobs:
   
   notify:
     runs-on: ubuntu-latest
-    needs: [build, deploy] 
-    if: always()
+    needs: [build, deploy]
+    if: always() # Isso garante que ela rode mesmo se o build falhar
     steps:
       - name: Enviar Alerta para o Discord
-        uses: johnnyhuy/actions-discord-git-webhook@main
+        uses: sarisia/actions-status-discord@v1
         with:
-          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ needs.build.result }} 
+          title: "Status do Pipeline - Calculadora de Receitas"
+          description: "O fluxo de CI/CD foi finalizado."
+          color: ${{ needs.build.result == 'success' && '0x00ff00' || '0xff0000' }}

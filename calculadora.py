@@ -1,7 +1,7 @@
 import json
 
 CATALOGO = {
-    "1": {"nome": "Pão Italiano", "agua": 350, "sal": 10, "fermento": 5},
+    "1": {"nome": "Pão Italiano", "agua": 320, "sal": 10, "fermento": 5},
     "2": {"nome": "Ciabatta", "agua": 410, "sal": 11, "fermento": 6},
     "3": {"nome": "Pão de Forma", "agua": 300, "sal": 9, "fermento": 7}
 }
