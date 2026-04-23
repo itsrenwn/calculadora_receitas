@@ -9,7 +9,7 @@ class TestCalculadoraPanificacao(unittest.TestCase):
         resultado = calcular_porcentagens(dados)
         self.assertEqual(resultado["agua"], 70)
 
-    # Teste 2: Escalonamento (Corrigido: removido o 'nome,')
+    # Teste 2: Escalonamento
     def test_escalonar_italiano(self):
         resultado = escalonar_receita(1000) 
         self.assertEqual(resultado["agua"], 700)
@@ -26,7 +26,7 @@ class TestCalculadoraPanificacao(unittest.TestCase):
         msg = validar_receita(receita)
         self.assertIn("⚠️", msg)
 
-    # Teste 5: Proporção de Sal (Corrigido: removido o '_,')
+    # Teste 5: Proporção de Sal
     def test_escalonamento_sal(self):
         resultado = escalonar_receita(250)
         self.assertEqual(resultado["sal"], 5.0)
