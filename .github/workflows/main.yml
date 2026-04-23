@@ -42,4 +42,4 @@ jobs:
           status: ${{ needs.build.result }} 
           title: "Status do Pipeline - Calculadora de Receitas"
           description: "O fluxo de CI/CD foi finalizado."
-          color: 0x00ff00
+          color: ${{ needs.build.result == 'success' && '0x00ff00' || '0xff0000' }}
