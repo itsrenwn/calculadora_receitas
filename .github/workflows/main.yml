@@ -22,10 +22,20 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build  # Isso aqui cria a linha de conexão entre as caixas!
-    if: github.event_name == 'push' # Só faz o deploy se for o merge final
+    needs: build  
+    if: github.event_name == 'push'
     steps:
     - name: Simulating Deployment
       run: |
         echo "Iniciando deploy..."
         echo "Ambiente de produção atualizado!"
+  
+  notify:
+    runs-on: ubuntu-latest
+    needs: [build, deploy] 
+    if: always()
+    steps:
+      - name: Enviar Alerta para o Discord
+        uses: johnnyhuy/actions-discord-git-webhook@v1
+        with:
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}

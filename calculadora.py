@@ -1,41 +1,50 @@
 import json
 
-# Receita padrão (Baseada em 100% de farinha)
-receita_base = {
-    "farinha": 500,
-    "agua": 375,
-    "sal": 10,
-    "fermento": 5
+CATALOGO = {
+    "1": {"nome": "Pão Italiano", "agua": 350, "sal": 10, "fermento": 5},
+    "2": {"nome": "Ciabatta", "agua": 410, "sal": 11, "fermento": 6},
+    "3": {"nome": "Pão de Forma", "agua": 300, "sal": 9, "fermento": 7}
 }
 
-def calcular_porcentagens(ingredientes):
-    """Calcula a porcentagem de cada ingrediente em relação à farinha."""
-    farinha = ingredientes["farinha"]
-    return {item: (qtd / farinha) * 100 for item, qtd in ingredientes.items()}
+def validar_receita(ingredientes):
+    """Verifica se a hidratação está muito alta (alerta de pão difícil de modelar)."""
+    hidratacao = (ingredientes['agua'] / ingredientes['farinha']) * 100
+    if hidratacao > 80:
+        return f"⚠️ Alerta: Hidratação em {hidratacao:.1f}%. Massa será muito mole!"
+    return f"✅ Hidratação em {hidratacao:.1f}%. Proporção ideal."
 
-def escalonar_receita(farinha_desejada):
-    """Calcula as quantidades baseadas na nova quantidade de farinha."""
-    porcentagens = calcular_porcentagens(receita_base)
-    return {item: (porcentagem / 100) * farinha_desejada for item, porcentagem in porcentagens.items()}
-
-def salvar_receita(resultado):
-    """Salva o resultado em um arquivo de texto."""
-    with open("receita_final.txt", "w", encoding="utf-8") as f:
-        f.write("--- RECEITA ESCALONADA ---\n")
-        for item, qtd in resultado.items():
-            f.write(f"{item.capitalize()}: {qtd:.2f}g\n")
-    print("\n[OK] Receita salva em 'receita_final.txt'!")
+def calcular_producao(id_receita, farinha_usuario):
+    base = CATALOGO[id_receita]
+    fator = farinha_usuario / 500
+    
+    resultado = {
+        "farinha": farinha_usuario,
+        "agua": base["agua"] * fator,
+        "sal": base["sal"] * fator,
+        "fermento": base["fermento"] * fator
+    }
+    return base["nome"], resultado
 
 if __name__ == "__main__":
-    print("=== CALCULADORA DE PANIFICAÇÃO PROFISSIONAL ===")
-    try:
-        peso_farinha = float(input("Digite a quantidade de farinha (g): "))
-        nova_receita = escalonar_receita(peso_farinha)
-        
-        print("\nIngredientes Calculados:")
-        for item, qtd in nova_receita.items():
-            print(f"- {item.upper()}: {qtd:.2f}g")
+    print("--- SISTEMA DE GESTÃO DE PANIFICAÇÃO ---")
+    print("Escolha a base:")
+    for id, dados in CATALOGO.items():
+        print(f"{id}. {dados['nome']}")
+    
+    opcao = input("\nDigite o número da receita: ")
+    
+    if opcao in CATALOGO:
+        try:
+            qtd_farinha = float(input("Quantas gramas de farinha você vai usar? "))
+            nome, receita = calcular_producao(opcao, qtd_farinha)
             
-        salvar_receita(nova_receita)
-    except ValueError:
-        print("Erro: Por favor, insira um número válido.")
+            print(f"\n--- Receita para {nome} ---")
+            for ing, peso in receita.items():
+                print(f"{ing.capitalize()}: {peso:.2f}g")
+            
+            print(f"\nSTATUS: {validar_receita(receita)}")
+            
+        except ValueError:
+            print("Erro: Digite um peso válido.")
+    else:
+        print("Opção inválida.")
